@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha utils.spec.js --exec babel-node --presets @babel/preset-env",
+    "test": "mocha index.spec.js",
     "start": "nodemon index --exec babel-node --presets @babel/preset-env"
   },
   "keywords": [],
