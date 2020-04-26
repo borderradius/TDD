@@ -1,8 +1,9 @@
-// import express from 'express'
 const express = require('express')
-// import morgan from 'morgan';
+const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const app = express()
+
+
 
 let users = [
   { id: 1, name: 'alice' },
@@ -11,6 +12,8 @@ let users = [
 ]
 
 app.use(morgan('dev'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/', (req, res) => {
   res.send('Hello world')
@@ -38,6 +41,15 @@ app.delete('/users/:id', (req, res) => {
   if (Number.isNaN(id)) res.status(400).end()
   users = users.filter((a) => a.id !== id)
   res.status(204).end()
+})
+
+app.post('/users', (req, res) => {
+  const name = req.body.name
+  const id = Date.now()
+  const user = {id, name}
+  users.push(user)
+  res.status(201).json(user)
+  
 })
 
 app.listen(3000, () => {
