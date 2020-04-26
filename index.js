@@ -45,11 +45,25 @@ app.delete('/users/:id', (req, res) => {
 
 app.post('/users', (req, res) => {
   const name = req.body.name
+  if(!name) return res.status(400).end()
+
+  // name 중복체크
+  const conflictName = users.filter(user => user.name === name).length
+  if (conflictName) return res.status(409).end()
+
   const id = Date.now()
   const user = {id, name}
   users.push(user)
   res.status(201).json(user)
   
+})
+
+app.put('/users/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10)
+  const name = req.body.name
+  const user = users.filter(user => user.id === id)[0]
+  user.name = name
+  res.json(user)
 })
 
 app.listen(3000, () => {
